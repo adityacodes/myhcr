@@ -19,6 +19,13 @@ export class Tab2Page {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
       buttons: [{
+        text: 'Recognise',
+        role: 'destructive',
+        icon: 'eye',
+        handler: () => {
+          this.photoService.recognisePicture(photo, position);
+        }
+      },{
         text: 'Delete',
         role: 'destructive',
         icon: 'trash',

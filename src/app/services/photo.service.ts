@@ -114,6 +114,35 @@ export class PhotoService {
       return (await this.convertBlobToBase64(blob)) as string;
     }
   }
+  
+  // Recognize text in the image with Google Cloud Vision APIs
+  public async recognisePicture(photo: UserPhoto, position: number) {
+    // "hybrid" will detect Cordova or Capacitor
+    if (this.platform.is('hybrid')) {
+      // Read the file into base64 format
+      const file = await Filesystem.readFile({
+        path: photo.filepath,
+      });
+
+      return file.data;
+    } else {
+      // Fetch the photo, read as a blob, then convert to base64 format
+      const response = await fetch(photo.webviewPath!);
+      const blob = await response.blob();
+
+      return (await this.convertBlobToBase64(blob)) as string;
+    }
+
+    // this.vision.getLabels(imageData,this.selectedfeature).subscribe(async (result) => {
+    //   console.log(result.json())
+    //   let navigationExtras: NavigationExtras = {
+    //   queryParams: {
+    //   special: JSON.stringify(imageData),
+    //   result : JSON.stringify(result.json()),
+    //   feature : JSON.stringify(this.selectedfeature)
+    // }};
+
+  }
 
   // Delete picture by removing it from reference data and the filesystem
   public async deletePicture(photo: UserPhoto, position: number) {
